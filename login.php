@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_SESSION["user"])) {
+if (isset($_SESSION["login"])) {
    header("Location:index/index.html");
 }
 ?>
@@ -22,19 +22,19 @@ if (isset($_SESSION["user"])) {
            $email = $_POST["email"];
            $password = $_POST["password"];
             require_once "database.php";
-           # $ema = "SELECT * FROM user WHERE email ='$email'   ";
-            #$na = "SELECT * FROM user WHERE full_name  ";
+           # $ema = "SELECT * FROM login WHERE email ='$email'   ";
+            #$na = "SELECT * FROM login WHERE full_name  ";
 
-            if( $sql = "SELECT * FROM user WHERE email  = '$email' ")
+            if( $sql = "SELECT * FROM login WHERE email  = '$email' ")
             {
             $result = mysqli_query($conn, $sql);
-            $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-            if ($user) 
+            $login = mysqli_fetch_array($result, MYSQLI_ASSOC);
+            if ($login) 
             {
-                if (password_verify($password, $user["password"]))
+                if (password_verify($password, $login["password"]))
                  {
                     session_start();
-                    $_SESSION["user"] = "yes";
+                    $_SESSION["login"] = "yes";
                     header("Location: index.php");
                     die();
                 }else
@@ -47,16 +47,16 @@ if (isset($_SESSION["user"])) {
                 echo "<div class='alert alert-danger'>INVALID EMAIL OR PASSWORD</div>";
             }
         }
-        if( $sql = "SELECT * FROM user WHERE full_name  = '$email' ")
+        if( $sql = "SELECT * FROM login WHERE full_name  = '$email' ")
         {
         $result = mysqli_query($conn, $sql);
-        $user = mysqli_fetch_array($result, MYSQLI_ASSOC);
-        if ($user) 
+        $login = mysqli_fetch_array($result, MYSQLI_ASSOC);
+        if ($login) 
         {
-            if (password_verify($password, $user["password"]))
+            if (password_verify($password, $login["password"]))
              {
                 session_start();
-                $_SESSION["user"] = "yes";
+                $_SESSION["login"] = "yes";
                 header("Location: index/index.html");
                 die();
             }else
@@ -64,10 +64,7 @@ if (isset($_SESSION["user"])) {
                 echo "<div class='alert alert-danger'>INVALID PASSWORD !</div>";
             }
         }
-        else
-        {
-            echo "<div class='alert alert-danger'>INVALID EMAIL OR PASSWORD</div>";
-        }
+       
     }
 
         
@@ -78,7 +75,7 @@ if (isset($_SESSION["user"])) {
         
         </style><center style="color:white";>PAY ROLL LOGIN<center></h4>
         <div class="form-group">
-            <input type="text" placeholder="Enter Email or Username:" name="email" class="form-control">
+            <input type="text" placeholder="Enter Email or loginname:" name="email" class="form-control">
         </div>
         <div class="form-group" style="color:white";>
             <input type="password" placeholder="Enter Password:" name="password" class="form-control" id="myinput">
